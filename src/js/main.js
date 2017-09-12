@@ -12,22 +12,29 @@ const postBtn = document.getElementById('post')
 const putBtn = document.getElementById('put')
 const deleteBtn = document.getElementById('del')
 
-// codeview
+// innerTEXT
 const codeView = document.getElementById('viewer')
+const message = document.getElementById('message')
 
 function getItem(e) {
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', '/users/' + userid.value, true); // 비동기적인 GET요청을 연다.(open은 요청보낼 준비를 의미)
+  const email = /@/;
+  const useridVal = userid.value
+  if (!useridVal.match(email)) {
+    message.innerHTML = '다시 입력하세요';
+  }
+
+  xhr.open('GET', `/users/${userid.value}`); // 비동기적인 GET요청을 연다.(open은 요청보낼 준비를 의미)
   xhr.send(); // 매개변수에는 요청에 쓸 데이터만 받는다.
   xhr.onreadystatechange = function () {
-    if (xhr.readyState === XMLHttpRequest.DONE) {
+    if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         // console.log("ok")
         const getItemList = JSON.stringify(JSON.parse(xhr.responseText), null, 2); // xhr.responseText는 응답에 포함된 텍스트
-        codeView.innerHTML = getItemList
+        codeView.innerHTML = getItemList;
         // console.log(getItemList)
       } else {
-        console.log("status Error : " + this.status);
+        console.log('status Error : ' + this.status);
       }
     }
   }
@@ -36,13 +43,13 @@ function getItem(e) {
 
 function postItem(e) {
   const xhr = new XMLHttpRequest();
-  xhr.open('post','/users',true); // 비동기적인 POST요청을 연다.(open은 요청보낼 준비를 의미)
+  xhr.open('post', '/users'); // 비동기적인 POST요청을 연다.(open은 요청보낼 준비를 의미)
   xhr.setRequestHeader('Content-type', 'application/json');
   const data = {
-    "userid" : userid.value, 
-    'password' : password.value, 
-    'firstname' : firstname.value, 
-    'lastname' : lastname.value
+    'userid': userid.value, 
+    'password': password.value, 
+    'firstname': firstname.value, 
+    'lastname': lastname.value
   };
   // console.log(data)
   xhr.send(JSON.stringify(data)); // 매개변수에는 요청에 쓸 데이터만 받는다.
@@ -52,7 +59,7 @@ function postItem(e) {
         // console.log("ok")
         const postItemList = JSON.stringify(JSON.parse(xhr.responseText), null, 2);
         // console.log(postItemList)
-        codeView.innerHTML = "포스트 완료 :) GET버튼을 눌러서 확인하세요"
+        codeView.innerHTML = '포스트 완료 :) GET버튼을 눌러서 확인하세요'
       } else {
         console.log("status Error : " + this.status);
       }
@@ -62,18 +69,13 @@ function postItem(e) {
   
 function deleteItem(e) {
   const xhr = new XMLHttpRequest();
-  xhr.open('delete','/users/'+ userid.value,true); // 비동기적인 DELETE요청을 연다.(open은 요청보낼 준비를 의미)
-  xhr.setRequestHeader('Content-type', 'application/json');
-  const data = {
-    "userid" : userid.value, 
-  };
-  xhr.send(JSON.stringify(data)); // 매개변수에는 요청에 쓸 데이터만 받는다.
+  xhr.open('delete', `/users/${userid.value}`); // 비동기적인 DELETE요청을 연다.(open은 요청보낼 준비를 의미)
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
-        console.log("delete ok")
+        // console.log("delete ok")
         const deleteItemList = JSON.stringify(JSON.parse(xhr.responseText), null, 2); 
-        codeView.innerHTML = "삭제 완료 :) GET버튼을 눌러서 확인하세요"
+        codeView.innerHTML = '삭제 완료 :) GET버튼을 눌러서 확인하세요'
         // console.log(deleteItemList)
       } else {
         console.log("status Error : " + this.status);
@@ -84,13 +86,13 @@ function deleteItem(e) {
 
 function putItem(e) {
   const xhr = new XMLHttpRequest();
-  xhr.open('put','/users/'+ userid.value,true); // 비동기적인 GET요청을 연다.(open은 요청보낼 준비를 의미)
+  xhr.open('put', `/users/${userid.value}`);
   xhr.setRequestHeader('Content-type', 'application/json');
   const data = {
-    "userid" : userid.value, 
-    'password' : password.value, 
-    'firstname' : firstname.value, 
-    'lastname' : lastname.value
+    'userid': userid.value, 
+    'password': password.value, 
+    'firstname': firstname.value, 
+    'lastname': lastname.value
   };
   // console.log(data)
   xhr.send(JSON.stringify(data)); // 매개변수에는 요청에 쓸 데이터만 받는다.
