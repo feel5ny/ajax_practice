@@ -2,6 +2,26 @@
 @import "partial/_body";
 
 $res-color: #6900FF;
+$grid-width: 800px;
+// .wrapper{
+//   width: $grid-width; 
+//   margin: 0 auto;
+// }
+
 #res {
   color: $res-color;
 }
+
+
+*{
+  margin: 0px;
+  padding : 0px;
+}
+
+
+.btnList {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
